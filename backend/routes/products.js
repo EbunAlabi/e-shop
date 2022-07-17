@@ -15,7 +15,7 @@ router.get(`/`, async (req,res)=>{
     res.send(productList);
 })
 
-router.post (`/`, (req, res)=>{
+router.post (`/`, async (req, res)=>{
     //const newProduct = req.body;
     const product = new Product({
         name: req.body.name,
