@@ -55,7 +55,11 @@ const productSchema = mongoose.Schema({
     dateCreated: {
         type: Date,
         default: Date.now,
-    }
+    },
+    numReviews: {
+        type: Number,
+        default: 0,
+    },
 
 })
 
