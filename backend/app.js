@@ -18,19 +18,23 @@ app.use(morgan('tiny'));
 const productSchema = mongoose.Schema({
     name: String,
     image: String,
-    countInStock: Number
+    countInStock: {
+        type: Number,
+        required: true
+    }
 })
 
 //product model
 const Product = mongoose.model('Product', productSchema)
 
-app.get(`${api}/products`, (req,res)=>{
-    const product = {
-        id:1,
-        name: 'hair dresser',
-        image: 'some url'
+app.get(`${api}/products`, async (req,res)=>{
+    const productList = await Product.find();
+
+    if (!productList){
+        res.status(500).json({success: false})
     }
-    res.send(product);
+
+    res.send(productList);
 })
 
 app.post (`${api}/products`, (req, res)=>{
@@ -40,7 +44,7 @@ app.post (`${api}/products`, (req, res)=>{
         image: req.body.image,
         countInStock: req.body.countInStock
     })
-    
+
     product.save().then((createdProduct => {
         res.status(201).json(createdProduct)
     })).catch((err)=> {
@@ -49,8 +53,6 @@ app.post (`${api}/products`, (req, res)=>{
             success:false
         })
     })
-    console.log(newProduct);
-    res.send(newProduct);
 })
 
 
